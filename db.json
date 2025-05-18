@@ -1,0 +1,62 @@
+{
+  "orders": [
+    {
+      "id": "1",
+      "userId": 1,
+      "totalPrice": 300,
+      "status": "completed"
+    },
+    {
+      "id": "2",
+      "userId": 2,
+      "totalPrice": 150,
+      "status": "pending"
+    },
+    {
+      "id": "3",
+      "userId": 3,
+      "totalPrice": 500,
+      "status": "completed"
+    }
+  ],
+  "users": [
+    {
+      "id": "1",
+      "name": "أحمد",
+      "email": "ahmed@gmail.com"
+    },
+    {
+      "id": "2",
+      "name": "سارة",
+      "email": "sara@gmail.com"
+    },
+    {
+      "id": "3",
+      "name": "محمد",
+      "email": "mohamed@gmail.com"
+    }
+  ],
+  "products": [
+    {
+      "id": "1",
+      "title": "لابتوب",
+      "price": 1000,
+      "image": "/labtop.jpg",
+      "stock": 100
+    },
+    {
+      "id": "2",
+      "title": "موبايل",
+      "price": 600,
+      "image": "/phone.jpg",
+      "stock": 60
+    },
+    {
+      "id": "3",
+      "title": "سماعه",
+      "price": 2200,
+      "image": "/headphone.jpg",
+      "stock": 80
+    }
+  ]
+}
