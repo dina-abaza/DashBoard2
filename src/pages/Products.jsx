@@ -9,7 +9,11 @@ export default function Products() {
     image: "",
     stock: "",
   });
-
+  const [showForm, setShowForm] = useState(false)
+   
+  useEffect(() => {
+    setTimeout(() => setShowForm(true), 100);
+  }, [])
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -54,7 +58,11 @@ export default function Products() {
   };
 
   return (
-    <div className="p-4" dir="rtl">
+    <div
+        className={` w-full text-center transition-all duration-700 ease-in-out transform ${
+          showForm ? "translate-x-0 opacity-100" : "-translate-x-20 opacity-0"
+        } bg-white p-8`}
+      >
       <h2 className="text-2xl font-bold text-amber-700 mb-4 uppercase">products</h2>
 
     

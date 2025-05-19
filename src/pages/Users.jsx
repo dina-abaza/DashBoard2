@@ -3,6 +3,11 @@ import axios from "axios";
 
 export default function Users() {
   const [users, setUsers] = useState([]);
+   const [showForm, setShowForm] = useState(false)
+   
+  useEffect(() => {
+    setTimeout(() => setShowForm(true), 100);
+  }, []);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -18,8 +23,12 @@ export default function Users() {
   }, []);
 
   return (
-    <div className="p-4">
-      <h2 className="text-2xl font-bold text-amber-700 mb-4 uppercase">Users</h2>
+       <div
+        className={` w-full text-center transition-all duration-700 ease-in-out transform ${
+          showForm ? "translate-x-0 opacity-100" : "-translate-x-20 opacity-0"
+        } bg-white p-8 mt-10`}
+      >
+      <h2 className="text-2xl font-bold text-amber-700 mb-10 uppercase">Users</h2>
       <table className="w-full table-auto border">
         <thead>
           <tr className="bg-gray-200">

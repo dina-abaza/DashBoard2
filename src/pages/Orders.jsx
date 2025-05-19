@@ -5,6 +5,11 @@ export default function Orders (){
   const [orders, setOrders] = useState([]);
   const [users, setUsers] = useState([]);
   const [filter, setFilter] = useState("all");
+  const [showForm, setShowForm] = useState(false)
+   
+  useEffect(() => {
+    setTimeout(() => setShowForm(true), 100);
+  }, [])
 
   
   useEffect(() => {
@@ -50,11 +55,15 @@ export default function Orders (){
     filter === "all" ? orders : orders.filter((o) => o.status === filter);
 
   return (
-    <div>
-      <h2 className="text-2xl font-bold mb-4 uppercase text-amber-700">orders</h2>
+     <div
+        className={` w-full flex flex-col justify-center items-center transition-all duration-700 ease-in-out transform ${
+          showForm ? "translate-x-0 opacity-100" : "-translate-x-20 opacity-0"
+        } bg-white p-8`}
+      >
+      <h2 className="text-2xl font-bold mb-4 uppercase text-amber-700">Orders</h2>
 
       <div className="mb-4">
-        <label className="mr-2 font-semibold"> الحالة:</label>
+        <label className="mr-2 font-semibold">الحالة:</label>
         <select
           className="border px-2 py-1 rounded"
           value={filter}
@@ -66,8 +75,7 @@ export default function Orders (){
         </select>
       </div>
 
-    
-      <div className="overflow-x-auto">
+      <div className="w-full max-w-4xl overflow-x-auto">
         <table className="min-w-full bg-white shadow rounded-lg">
           <thead>
             <tr className="bg-gray-100 text-left">
@@ -81,22 +89,18 @@ export default function Orders (){
             {filteredOrders.map((order) => (
               <tr key={order.id} className="border-t">
                 <td className="p-3">{order.id}</td>
-
-            
                 <td className="p-3">{getUserName(order.userId)}</td>
-
                 <td className="p-3">{order.totalPrice} ج.م</td>
-
                 <td className="p-3 flex items-center gap-2">
                   <span
                     className={`px-2 py-1 rounded text-white text-sm ${
-                      order.status === "completed" ? "bg-green-500" : "bg-yellow-500"
+                      order.status === "completed"
+                        ? "bg-green-500"
+                        : "bg-yellow-500"
                     }`}
                   >
                     {order.status === "completed" ? "مكتمل" : "قيد الانتظار"}
                   </span>
-
-                
                   {order.status === "pending" && (
                     <button
                       onClick={() => updateStatus(order.id, "completed")}
@@ -108,7 +112,6 @@ export default function Orders (){
                 </td>
               </tr>
             ))}
-
 
             {filteredOrders.length === 0 && (
               <tr>

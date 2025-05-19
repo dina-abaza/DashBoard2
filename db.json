@@ -58,5 +58,19 @@
       "image": "/headphone.jpg",
       "stock": 80
     }
-  ]
+  ],
+  "admin": {
+    "item": {
+      "email": "admin@gmail.com",
+      "password": "admin123",
+      "language": "ar",
+      "currency": "USD",
+      "darkMode": false
+    },
+    "email": "admin@gmail.com",
+    "password": "admin123",
+    "language": "ar",
+    "currency": "USD",
+    "darkMode": false
+  }
 }
