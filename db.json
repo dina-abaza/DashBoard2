@@ -10,7 +10,7 @@
       "id": "2",
       "userId": 2,
       "totalPrice": 150,
-      "status": "pending"
+      "status": "completed"
     },
     {
       "id": "3",
@@ -37,13 +37,6 @@
     }
   ],
   "products": [
-    {
-      "id": "1",
-      "title": "لابتوب",
-      "price": 1000,
-      "image": "/labtop.jpg",
-      "stock": 100
-    },
     {
       "id": "2",
       "title": "موبايل",

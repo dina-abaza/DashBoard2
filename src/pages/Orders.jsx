@@ -11,29 +11,34 @@ export default function Orders (){
     setTimeout(() => setShowForm(true), 100);
   }, [])
 
-  
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [ordersRes, usersRes] = await Promise.all([
-          axios.get("http://localhost:5000/orders"),
-          axios.get("http://localhost:5000/users"),
-        ]);
-        setOrders(ordersRes.data);
-        setUsers(usersRes.data);
-      } catch (err) {
-        console.error("فشل في جلب البيانات", err);
+        const resOrder = await axios.get("http://localhost:5000/orders");
+        setOrders(resOrder.data);
+        console.log(resOrder.data)
+      } catch (error) {
+        console.log("فشل في تحميل بيانات الطلبات", error);
+      }
+
+      try {
+        const resUser = await axios.get("http://localhost:5000/users");
+        setUsers(resUser.data);
+        console.log(resUser.data)
+      } catch (error) {
+        console.log("فشل في تحميل بيانات المستخدمين", error);
       }
     };
 
     fetchData();
-  }, []);
+  }, []); 
 
 
   const getUserName = (userId) => {
-    const user = users.find((u) => u.id === userId);
+    const user = users.find((u) => String(u.id) === String(userId));
     return user ? user.name : "مستخدم غير معروف";
   };
+
 
 
   const updateStatus = async (id, newStatus) => {

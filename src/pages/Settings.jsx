@@ -12,7 +12,7 @@ export default function Settings() {
   const [darkMode, setDarkMode] = useState(false);
   const [showForm, setShowForm] = useState(false);
 
-  // تحميل بيانات الأدمن
+
   useEffect(() => {
     const fetchAdmin = async () => {
       try {
@@ -32,7 +32,7 @@ export default function Settings() {
     setTimeout(() => setShowForm(true), 100);
   }, []);
 
-  // تطبيق dark mode على العنصر <html>
+  
   useEffect(() => {
     if (darkMode) {
       document.documentElement.classList.add('dark');
