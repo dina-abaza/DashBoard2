@@ -1,70 +1,72 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-export default function Orders (){
+export default function Orders() {
   const [orders, setOrders] = useState([]);
   const [users, setUsers] = useState([]);
   const [filter, setFilter] = useState("all");
-  const [showForm, setShowForm] = useState(false)
-   
+  const [showForm, setShowForm] = useState(false);
+
   useEffect(() => {
     setTimeout(() => setShowForm(true), 100);
-  }, [])
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const resOrder = await axios.get("http://localhost:5000/orders");
-        setOrders(resOrder.data);
-        console.log(resOrder.data)
-      } catch (error) {
-        console.log("فشل في تحميل بيانات الطلبات", error);
-      }
+        const savedOrders = localStorage.getItem("orders");
+        const savedUsers = localStorage.getItem("users");
 
-      try {
-        const resUser = await axios.get("http://localhost:5000/users");
-        setUsers(resUser.data);
-        console.log(resUser.data)
+        if (savedOrders && savedUsers) {
+          setOrders(JSON.parse(savedOrders));
+          setUsers(JSON.parse(savedUsers));
+        } else {
+          const resOrder = await axios.get("http://localhost:5000/orders");
+          setOrders(resOrder.data);
+          localStorage.setItem("orders", JSON.stringify(resOrder.data));
+
+          const resUser = await axios.get("http://localhost:5000/users");
+          setUsers(resUser.data);
+          localStorage.setItem("users", JSON.stringify(resUser.data));
+        }
       } catch (error) {
-        console.log("فشل في تحميل بيانات المستخدمين", error);
+        console.log("فشل في تحميل بيانات الطلبات أو المستخدمين", error);
       }
     };
 
     fetchData();
-  }, []); 
-
+  }, []);
 
   const getUserName = (userId) => {
     const user = users.find((u) => String(u.id) === String(userId));
     return user ? user.name : "مستخدم غير معروف";
   };
 
-
-
   const updateStatus = async (id, newStatus) => {
     try {
-     const res= await axios.patch(`http://localhost:5000/orders/${id}`, { status: newStatus });
-         console.log("الاستجابة بعد التحديث:", res.data);
-      setOrders((prev) =>
-        prev.map((order) =>
+      const res = await axios.patch(`http://localhost:5000/orders/${id}`, { status: newStatus });
+      console.log("الاستجابة بعد التحديث:", res.data);
+
+      setOrders((prev) => {
+        const updatedOrders = prev.map((order) =>
           order.id === id ? { ...order, status: newStatus } : order
-        )
-      );
+        );
+        localStorage.setItem("orders", JSON.stringify(updatedOrders));
+        return updatedOrders;
+      });
     } catch (err) {
       console.error("فشل في تحديث الحالة", err);
     }
   };
 
-  
-  const filteredOrders =
-    filter === "all" ? orders : orders.filter((o) => o.status === filter);
+  const filteredOrders = filter === "all" ? orders : orders.filter((o) => o.status === filter);
 
   return (
-     <div
-        className={` w-full flex flex-col justify-center items-center transition-all duration-700 ease-in-out transform ${
-          showForm ? "translate-x-0 opacity-100" : "-translate-x-20 opacity-0"
-        } bg-white p-8`}
-      >
+    <div
+      className={` w-full flex flex-col justify-center items-center transition-all duration-700 ease-in-out transform ${
+        showForm ? "translate-x-0 opacity-100" : "-translate-x-20 opacity-0"
+      } bg-white p-8`}
+    >
       <h2 className="text-2xl font-bold mb-4 uppercase text-amber-700">Orders</h2>
 
       <div className="mb-4">
@@ -99,9 +101,7 @@ export default function Orders (){
                 <td className="p-3 flex items-center gap-2">
                   <span
                     className={`px-2 py-1 rounded text-white text-sm ${
-                      order.status === "completed"
-                        ? "bg-green-500"
-                        : "bg-yellow-500"
+                      order.status === "completed" ? "bg-green-500" : "bg-yellow-500"
                     }`}
                   >
                     {order.status === "completed" ? "مكتمل" : "قيد الانتظار"}
@@ -130,4 +130,4 @@ export default function Orders (){
       </div>
     </div>
   );
-};
+}

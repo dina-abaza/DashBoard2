@@ -12,27 +12,40 @@ export default function Settings() {
   const [darkMode, setDarkMode] = useState(false);
   const [showForm, setShowForm] = useState(false);
 
-
   useEffect(() => {
-    const fetchAdmin = async () => {
-      try {
-        const res = await axios.get('http://localhost:5000/admin');
-        const admin = res.data;
-        setEmail(admin.email);
-        setPassword(admin.password);
-        setLanguage(admin.language);
-        setCurrency(admin.currency);
-        setDarkMode(admin.darkMode);
-      } catch (error) {
-        console.error('فشل تحميل بيانات الأدمن', error);
-      }
-    };
 
-    fetchAdmin();
-    setTimeout(() => setShowForm(true), 100);
-  }, []);
-
+    const localSettings = localStorage.getItem('adminSettings');
+    if (localSettings) {
+      const admin = JSON.parse(localSettings);
+      setEmail(admin.email);
+      setPassword(admin.password);
+      setLanguage(admin.language);
+      setCurrency(admin.currency);
+      setDarkMode(admin.darkMode);
+      i18n.changeLanguage(admin.language);
+    } else {
+      const fetchAdmin = async () => {
+        try {
+          const res = await axios.get('http://localhost:5000/admin');
+          const admin = res.data;
+          setEmail(admin.email);
+          setPassword(admin.password);
+          setLanguage(admin.language);
+          setCurrency(admin.currency);
+          setDarkMode(admin.darkMode);
+          i18n.changeLanguage(admin.language);
   
+          localStorage.setItem('adminSettings', JSON.stringify(admin));
+        } catch (error) {
+          console.error('فشل تحميل بيانات الأدمن', error);
+        }
+      };
+      fetchAdmin();
+    }
+
+    setTimeout(() => setShowForm(true), 100);
+  }, [i18n]);
+
   useEffect(() => {
     if (darkMode) {
       document.documentElement.classList.add('dark');
@@ -48,15 +61,17 @@ export default function Settings() {
   };
 
   const handleSave = async () => {
-    try {
-      await axios.patch('http://localhost:5000/admin', {
-        email,
-        password,
-        language,
-        currency,
-        darkMode,
-      });
+    const updatedSettings = {
+      email,
+      password,
+      language,
+      currency,
+      darkMode,
+    };
 
+    try {
+      await axios.patch('http://localhost:5000/admin', updatedSettings);
+      localStorage.setItem('adminSettings', JSON.stringify(updatedSettings));
       alert(t('save') + ' ✅');
     } catch (err) {
       console.error('فشل في حفظ التعديلات', err);

@@ -8,7 +8,7 @@ export default function NavBar() {
 
   return (
     <nav className="w-full h-16 bg-amber-50 flex justify-between items-center px-4">
-      {/* الهامبرجر يظهر في الموبايل فقط */}
+    
       <div className="sm:hidden" onClick={toggleSidebar}>
         <FiMenu size={25} className="text-amber-800 cursor-pointer" />
       </div>

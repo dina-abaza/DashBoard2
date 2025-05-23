@@ -15,32 +15,41 @@ export default function DashBoard(){
      useEffect(() => {
     setTimeout(() => setShowForm(true), 100);
   }, []);
+  
+  useEffect(() => {
+  const fetchData = async () => {
+    try {
+      
+      const savedOrders = localStorage.getItem("orders");
+      const savedProducts = localStorage.getItem("products");
+      const savedUsers = localStorage.getItem("users");
 
-    useEffect(()=>{
-        const fetchData=async()=>{
-            try{
-                const orderRes=await axios.get("http://localhost:5000/orders");
-                setOrders(orderRes.data)
-            }
-            catch (error){
-                console.log("خطا اثناء تحميل الطلبات", error)
-            }
-            try{
-                const productRes=await axios.get ("http://localhost:5000/products");
-                setProducts(productRes.data)
-            }
-            catch(error){
-                console.log("خطا اثناء التحميل ",error)
-            }
-            try{
-                const userRes=await axios.get ("http://localhost:5000/users");
-                setUsers(userRes.data)
-            }
-            catch(error){
-                console.log("خطا اثناء التحميل", error)
-            }
-        }
-fetchData()},[])
+      if (savedOrders && savedProducts && savedUsers) {
+      
+        setOrders(JSON.parse(savedOrders));
+        setProducts(JSON.parse(savedProducts));
+        setUsers(JSON.parse(savedUsers));
+      } else {
+        
+        const orderRes = await axios.get("http://localhost:5000/orders");
+        setOrders(orderRes.data);
+        localStorage.setItem("orders", JSON.stringify(orderRes.data));
+
+        const productRes = await axios.get("http://localhost:5000/products");
+        setProducts(productRes.data);
+        localStorage.setItem("products", JSON.stringify(productRes.data));
+
+        const userRes = await axios.get("http://localhost:5000/users");
+        setUsers(userRes.data);
+        localStorage.setItem("users", JSON.stringify(userRes.data));
+      }
+    } catch (error) {
+      console.log("خطأ أثناء تحميل البيانات", error);
+    }
+  };
+
+  fetchData();
+}, []);
     return(
         <div
         className={`flex flex-col w-full justify-center items-center transition-all duration-700 ease-in-out transform ${

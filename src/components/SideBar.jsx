@@ -15,8 +15,8 @@ export default function SideBar() {
 
   return (
     <aside 
-      className={`bg-amber-50 h-screen p-4 space-y-4 fixed sm:relative top-0 left-0 transition-transform transform
-        ${isOpen ? "translate-x-0" : "-translate-x-full"} sm:translate-x-0 w-60 z-50`}
+   className={`bg-amber-50 h-screen p-4 space-y-4 fixed sm:relative top-0 left-0
+  ${isOpen ? "block" : "hidden"} sm:block w-60 z-50`}
     >
       <button
         className="text-amber-800 sm:hidden absolute top-4 right-4"
